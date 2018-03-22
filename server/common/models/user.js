@@ -5,11 +5,9 @@ module.exports =  class User extends Db{
 	constructor ()
 	{
 		super();
+		this.id = 0;
 		this.tableName ="users";
-		this.fullName = null; 
-		this.mobileNumber = null; 
-		this.email = null; 
-		this.password = null ; 
+
 	}
 
-}
+};

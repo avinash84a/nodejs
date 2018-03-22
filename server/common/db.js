@@ -1,4 +1,4 @@
-var mysql      = require('mysql');
+var mysql = require('mysql');
 const path = require("path"); 
 const  fs = require("fs"); 
 
@@ -38,13 +38,12 @@ module.exports = class Db {
 		});
 		 
 		this.connection.end();
-		cb()
+		cb();
 
     }
 
 
-    create (cb){
-
+    create (cb){    
             //attrbute={
     //     "email":"s@g.c",
     //      "password":"123"
@@ -53,16 +52,17 @@ module.exports = class Db {
     // }
     console.log(this);
 
-    		let sql = "insert into "+this.tableName+"(";
+     		let sql = "insert into "+this.tableName+"(";
     		let attributes = this.attributes; 
     		sql = sql+Object.keys(this.attributes).join().toString()+") values(" ;
                     //sql="insert into users(EMAIL,pass,full_name,mobile") values("
     		let values = "";
     		let attributesKeysArray = Object.keys(this.attributes); 
     		attributesKeysArray.forEach(function(key,i){
+
     			let comma = ",";
     			console.log(i,attributesKeysArray.length);
-    			if(i == (attributesKeysArray.length -1))
+    			if(i === (attributesKeysArray.length -1))
     			{
     				comma ="";
     			}
@@ -81,4 +81,82 @@ module.exports = class Db {
     	//let sql = `insert into users(full_name,email,mobile,password) values("${fullName}","${email}","${mobile}","${password}")`;
 
     }
+
+   delete (cb){
+
+            //attrbute={
+    //     "email":"s@g.c",
+    //      "password":"123"
+    //  "full_name":shiva
+    //     "mobile":1232
+    // }
+
+    //console.log(this);
+            let attributes = this.attributes;
+            let t1 = attributes.id;
+            
+            console.log("t1="+t1);      
+            let sql = "DELETE FROM "+this.tableName+" WHERE id ="+t1;
+             
+                                  
+            console.log(sql);
+            this.query(sql,function(){
+
+                cb();
+            });
+     
+
+    }
+
+    update (cb)
+    {
+
+            //attrbute={
+    //     "email":"s@g.c",
+    //      "password":"123"
+    //  "full_name":shiva
+    //     "mobile":1232
+    // }
+
+    //console.log(this);
+            let attributes = this.attributes;
+            let updateid = attributes.updateid;
+           let sql;
+      
+            let values = "";
+            let id;
+            // let attributesKeysArray = Object.keys(this.attributes); 
+            //  let arrid = parseInt(attributesKeysArray[0]);
+            //     console.log(attributesKeysArray[0]);
+            let attributesKeysArray = Object.keys(this.attributes);
+
+            attributesKeysArray.forEach(function(key,i){
+                    if(i===0){
+                         id=attributes[key];
+                    }
+                    else{
+                        let comma = ",";
+                    
+                        if(i === (attributesKeysArray.length -1))
+                        {
+                            comma ="";
+                        }
+                        values= values+" "+key+"="+`"${attributes[key]}"${comma}`;
+
+                        }
+
+                       
+             });
+             console.log(values);
+             sql="UPDATE "+this.tableName+" SET "+values+" WHERE id="+id;
+             console.log(sql);
+
+
+            this.query(sql,function(){
+
+                    cb();
+                });   
+
+    }  
+         
 };

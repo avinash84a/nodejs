@@ -22,6 +22,7 @@ module.exports = class Db {
 
     query(sql,cb) {
        		
+            let result;
 		this.connection.connect();
 		 
 		this.connection.query(sql, function (error, results, fields) {
@@ -32,13 +33,20 @@ module.exports = class Db {
 			}
 			else
 			{
-				console.log('The solution is: ', results);				
-			}
+                console.log("type of results : "+typeof(results));
+				console.log('The solution is: ', results);
+                
+                cb(results);				
+			     //result=JSON.stringify(results);
+            }
 
 		});
-		 
-		this.connection.end();
-		cb();
+		 this.connection.end();
+		// this.connection.end();
+  //       console.log("___________________________________________________________");
+		// console.log("query result ="+result);
+  //       console.log("___________________________________________________________");
+        
 
     }
 
@@ -50,7 +58,7 @@ module.exports = class Db {
     //  "full_name":shiva
     //     "mobile":1232
     // }
-    console.log(this);
+    //console.log(this);
 
      		let sql = "insert into "+this.tableName+"(";
     		let attributes = this.attributes; 
@@ -108,6 +116,36 @@ module.exports = class Db {
 
     }
 
+    login (cb)
+    {
+            let attributes = this.attributes;
+            let t1 = attributes.id;
+            let email = attributes.email;
+            let password = attributes.password;
+            let attributesKeysArray = Object.keys(this.attributes); 
+          
+               
+                   var sql = "SELECT id,email,password FROM "+this.tableName+" WHERE id ="+t1; 
+
+                   console.log(sql);        
+                if(t1 === ${attributes[0]} && email === ${attributes[1]} && password === ${attributes[1]} )
+                {
+                    this.query(sql,function(userdata){
+
+                    cb(null,userdata[0]);
+                    // values= values+ `"${attributes[key]}"${comma}`;
+                    //console.log(attributes[key]);
+                }   //values="s@g.c","123","shiva","1232" 
+            }); 
+
+            
+
+           
+    
+
+           
+    }
+
     update (cb)
     {
 
@@ -120,43 +158,106 @@ module.exports = class Db {
 
     //console.log(this);
             let attributes = this.attributes;
-            let updateid = attributes.updateid;
-           let sql;
+             let t1 = attributes.id;
+             let fullname = attributes.full_name;
+             let email = attributes.email;
+             let mobile = attributes.mobile;
+             let password = attributes.password;
+           //  UPDATE `users` SET `id`=[value-1],`full_name`=[value-2],`mobile`=[value-3],`email`=[value-4],`password`=[value-5] WHERE 1
+              var sql = "UPDATE "+this.tableName+" SET full_name="+`"${fullname}"`+",email="+`"${email}"`+", mobile="+`"${mobile}"`+",password ="+`"${password}"`+"  WHERE id ="+t1;
+             //let sql = "SELECT * FROM "+this.tableName+" WHERE id ="+t1;
+             
+                                  
+            console.log(sql);
+             this.query(sql,function(){
+
+                 cb();
+             });
+     
+
+            // let updateid = attributes.updateid;
+         //  let sql;
       
-            let values = "";
-            let id;
-            // let attributesKeysArray = Object.keys(this.attributes); 
+           // let values = "";
+            //let id;
+          //  let attributesKeysArray = Object.keys(this.attributes); 
             //  let arrid = parseInt(attributesKeysArray[0]);
             //     console.log(attributesKeysArray[0]);
-            let attributesKeysArray = Object.keys(this.attributes);
+            //let attributesKeysArray = Object.keys(this.attributes);
 
-            attributesKeysArray.forEach(function(key,i){
-                    if(i===0){
-                         id=attributes[key];
-                    }
-                    else{
-                        let comma = ",";
+            // attributesKeysArray.forEach(function(key,i){
+            //         if(i===0){
+            //              id=attributes[key];
+            //         }
+            //         else{
+            //             let comma = ",";
                     
-                        if(i === (attributesKeysArray.length -1))
-                        {
-                            comma ="";
-                        }
-                        values= values+" "+key+"="+`"${attributes[key]}"${comma}`;
+            //             if(i === (attributesKeysArray.length -1))
+            //             {
+            //                 comma ="";
+            //             }
+            //             values= values+" "+key+"="+`"${attributes[key]}"${comma}`;
 
-                        }
+            //             }
 
                        
-             });
-             console.log(values);
-             sql="UPDATE "+this.tableName+" SET "+values+" WHERE id="+id;
-             console.log(sql);
+             // });
+            // console.log(values);
+            //  sql="SELECT * FROM "+this.tableName+, function (err, result, fields) {
+            //     if (err) throw err;
+            //     console.log(result);
+            //     }
+            //  console.log(sql);
 
 
-            this.query(sql,function(){
+            // this.query(sql,function(){
 
-                    cb();
-                });   
+            //         cb();
+            //     });   
 
     }  
+
+    /*
+        @function findOne
+        @params   int id , function cb 
+        This function will retrive single record by given id in first params and return data in 
+        cb method. 
+    */
+ findOne(id,cb){
+
+        this.setAttribute("id",id);
+                
+        let attributes = this.attributes;
+        let t1 = attributes.id;
+        console.log("t1="+t1);  
+        var sql;    
+        sql = "SELECT * FROM "+this.tableName+" WHERE id ="+t1;
+
+       this.query(sql,function(userdata){
+
+            cb(null,userdata[0]);
+        });
+     
+    }
+
+
+    /* 
+        @function - findAll
+        @params - function cb
+        this will return db records for current model object
+
+     */ 
+    findAll(cb){
+        var sql;
+        sql = "SELECT * FROM "+this.tableName;
+
+       this.query(sql,function(userdata){
+                console.log("results in findall ="+userdata);
+                console.log("___________________________________________________________");
+
+                cb(userdata);
+            });
+     
+    }
          
 };

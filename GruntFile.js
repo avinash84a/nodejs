@@ -10,7 +10,7 @@ module.exports = function(grunt){
 			public:[
 				"public/js/*.js"
 			],
-			server:[
+			server:[  
 				"server/**/*.js","server/**/**/*.js"
 			]
 		},

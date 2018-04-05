@@ -1,12 +1,13 @@
 	<% include ../layout/header.ejs %>
 
 
-		<% var data=users %>
+		<% var data= JSON.parse(users) %>
 
 		<div class="container-full">
 			<div class="row">
 				<div class="col-md-offset-1">
 					<div class="col-md-10">
+
 						<table class="table table-bordered table-hover">	
 		<thead>
 			<th>ID</th>

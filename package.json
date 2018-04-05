@@ -9,6 +9,7 @@
     "grunt": "^1.0.2",
     "mysql": "^2.15.0",
     "path": "^0.12.7",
+    "promise": "^8.0.1",
     "url": "^0.11.0"
   },
   "devDependencies": {

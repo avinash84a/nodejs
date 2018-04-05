@@ -28,64 +28,64 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 
 
-app.get("/login",function(req,res){
+// app.get("/login",function(req,res){
 	
-	var user = require("./server/common/models/user.js");
-	var user = new user();
-	var url_parts = url.parse(req.url, true);
-	var query = url_parts.query;	
-	var id = req.query.id;
-	var qemail = req.query.email;
-	var pass = req.query.password;
+// 	var user = require("./server/common/models/user.js");
+// 	var user = new user();
+// 	var url_parts = url.parse(req.url, true);
+// 	var query = url_parts.query;	
+// 	var id = req.query.id;
+// 	var qemail = req.query.email;
+// 	var pass = req.query.password;
 
-	console.log("login id"+id);
+// 	console.log("login id"+id);
 		
-	if( id != 0){
+// 	if( id != 0){
 
-		user.findUser(function (userdata)
-		{
+// 		user.findUser(function (userdata)
+// 		{
 
-		console.log("results in app ="+userdata);
-		console.log("___________________________________________________________");
-		res.render("site/login",{users:userdata}); 
-		});
-	}
-	else	
-	{
-		res.redirect("/welcome");
-	}
-}); 
+// 		console.log("results in app ="+userdata);
+// 		console.log("___________________________________________________________");
+// 		res.render("site/login",{users:userdata}); 
+// 		});
+// 	}
+// 	else	
+// 	{
+// 		res.redirect("/welcome");
+// 	}
+// }); 
 
-app.post("/login",function(req,res){
+// app.post("/login",function(req,res){
 
 
-		let email = req.body.email;
-		let password = req.body.password;
-		var url_parts = url.parse(req.url, true);
-		var query = url_parts.query;	
-		var id = req.query.id;
-		var qemail = req.query.email;
-		var pass = req.query.password;
+// 		let email = req.body.email;
+// 		let password = req.body.password;
+// 		var url_parts = url.parse(req.url, true);
+// 		var query = url_parts.query;	
+// 		var id = req.query.id;
+// 		var qemail = req.query.email;
+// 		var pass = req.query.password;
 		
-		if(typeof email != 'undefined' typeof email == typeof qemail && typeof password != 'undefined' && typeof password == typeof pass )
-		{
-			var user = require("./server/common/models/user.js");
-		 	var model = new user();
-		 	model.setAttribute("id",id);
-		 	model.setAttribute("email",email);//"email",s@g.c
-		 	model.setAttribute("password" , password);//"password",123
+// 		if(typeof email != 'undefined' && typeof email == typeof qemail && typeof password != 'undefined' && typeof password == typeof pass )
+// 		{
+// 			var user = require("./server/common/models/user.js");
+// 		 	var model = new user();
+// 		 	model.setAttribute("id",id);
+// 		 	model.setAttribute("email",email);//"email",s@g.c
+// 		 	model.setAttribute("password" , password);//"password",123
 		 	
 		 	
-		 	model.login(function(){
-		 		return res.render("site/welcome"); 
-		 	}); 
-		 }
-		 else
-		 {
-		//user.query(sql); 
-				res.render("site/signup"); 
-		}
-}); 
+// 		 	model.login(function(){
+// 		 		return res.render("site/welcome"); 
+// 		 	}); 
+// 		 }
+// 		 else
+// 		 {
+// 		//user.query(sql); 
+// 				res.render("site/signup"); 
+// 		}
+// }); 
 
 
 app.get("/signup",function(req,res){
@@ -101,26 +101,24 @@ var url_parts = url.parse(req.url, true);
 var query = url_parts.query;	
 	var id = req.query.id;
 	console.log("deleted id"+id);
-	if( id != 0)
-		{
-			var user = require("./server/common/models/user.js");
-		 	var user = new user();
+	var user = require("./server/common/models/user.js");
+ 	var user = new user();
+ 	user.setAttribute("id",id);//"email",s@g.c		 	
+ 	user.delete().then(function(){
 
-		 	user.setAttribute("id",id);//"email",s@g.c
-		 	
+		console.log("resolve is call then function");
 
-		 	
-		 	user.delete(function(){
+ 		return res.redirect("/users"); 
+ 	
+ 	}).catch(function(error){
 
+ 		console.log("error",error); 
+ 	
+		//res.redirect("/users",error); 
 
-		 		return res.redirect("/users"); 
-		 	}); 
-		 }
-		 else
-		 {
-		//user.query(sql); 
-				res.redirect("/users"); 
-		} 
+ 	});
+	 
+		  
 	 
 }); 
 
@@ -168,7 +166,7 @@ var query = url_parts.query;
 		{
 				var user = require("./server/common/models/user.js");
 			 	var user = new user();
-			 	user.findOne(id,function (error,userdata)
+			 	user.findOne(id).then(function (error,userdata)
 				{
 
 					if(error)
@@ -219,12 +217,14 @@ app.get("/users",function(req,res){
 	var user = require("./server/common/models/user.js");
 		 	var user = new user();
 	
-	user.findAll(function (userdata)
+	user.findAll().then(function (userdata)
 	{
-
-		console.log("results in app ="+userdata);
-		console.log("___________________________________________________________");
+		userdata = JSON.parse( JSON.stringify(userdata));
+		console.log("results in app =",userdata);
 		res.render("site/users",{users:userdata}); 
+	}).catch(function(error){
+
+		console.log(error);
 	});
 	
 }); 
@@ -249,15 +249,18 @@ app.post("/signup",function(req,res){
 		 	model.setAttribute("full_name" , fullName);//"full_name",shiva
 		 	model.setAttribute("mobile",mobile);//"mobile",1232
 		 	
-		 	model.create(function(){
-		 		return res.render("site/welcome"); 
-		 	}); 
+		 	model.create().then(function(res){
+			
+			 res.render("site/welcome"); 
+
+		 	}).catch(function(error){
+		 		console.log(error);
+		 				res.render("site/signup"); 
+		 	});
+
+		 
 		 }
-		 else
-		 {
-		//user.query(sql); 
-				res.render("site/signup"); 
-		}
+		 
 }); 
 
 // app.post("/welcome",function(req,res){

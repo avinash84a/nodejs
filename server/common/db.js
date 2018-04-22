@@ -1,3 +1,4 @@
+
 var mysql = require('mysql');
 const path = require("path"); 
 const  fs = require("fs"); 
@@ -27,12 +28,12 @@ module.exports = class Db {
 
     
 
-    return new Promise(function(resolve,reject){
+    return new Promise((resolve,reject)=>{
        		
         let result;
 		_this.connection.connect();
 		 
-		_this.connection.query(sql, function (error, results, fields) {
+		_this.connection.query(sql, (error, results, fields)=> {
 	
 
 
@@ -74,7 +75,7 @@ module.exports = class Db {
     create (){    
 
 
-        return new Promise(function (resolve,reject){
+        return new Promise((resolve,reject)=>{
 
             if(!this.tableName)
             {
@@ -87,7 +88,7 @@ module.exports = class Db {
                     //sql="insert into users(EMAIL,pass,full_name,mobile") values("
             let values = "";
             let attributesKeysArray = Object.keys(this.attributes); 
-            attributesKeysArray.forEach(function(key,i){
+            attributesKeysArray.forEach((key,i)=>{
 
                 let comma = ",";
                 console.log(i,attributesKeysArray.length);
@@ -108,9 +109,9 @@ module.exports = class Db {
             // resolve(sql);
             // reject("NOthing");
             // return promise;
-            this.query(sql).then(function(res){
+            this.query(sql).then((res)=>{
                 resolve(res); 
-            }).catch(function(error){
+            }).catch((error)=>{
 
                 reject(error);
             });

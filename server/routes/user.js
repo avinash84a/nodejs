@@ -1,28 +1,28 @@
 import url from 'url';
-import {Utils} from "../helper/utils.js"; 
+import * as utils from "../helper/utils.js"; 
+import {User} from "../common/models/user.js"; 
 
 export function create(req,res){	
-    var user = require("../common/models/user.js");
-    var model = new user();
-
+    var model = new User();
     if(model.load(req.body.user) && model.validate())
     {                     
         model.create().then(()=>{	
             return res.redirect("/users"); 
         }).catch((error)=>{
-            console.log("error in update");
-        }) 
+            // this should be  implement into single place for all routing and exceptions         
+            model.exceptions  = error;
+            res.json(model.exceptions); 
+            //res.render("user/create",{user:model}); 
+        });
     }
     else
     {		
-        console.log(model.errors); 
         res.render("user/create",{user:model}); 
     }
 };
 
 
  export function update(req,res){
-
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;	
         var id = req.query.id;		
@@ -36,10 +36,9 @@ export function create(req,res){
                 var query = url_parts.query;	
                 var id = req.query.id; 
     
-                if(typeof fullName != 'undefined' && typeof email != 'undefined' && typeof mobile != 'undefined' && typeof password != 'undefined')
+                if( ! utils.isEmpty(fullName) && typeof email != 'undefined' && typeof mobile != 'undefined' && typeof password != 'undefined')
                 {
-                    var user = require("../common/models/user.js");
-                     var model = new user();
+                     var model = new User();
                      
                      model.setAttribute("id",id);
                      model.setAttribute("email",email);//"email",s@g.c
@@ -54,8 +53,7 @@ export function create(req,res){
                  }
                  else
                  {		
-                    var user = require("../common/models/user.js");
-                     var user = new user();
+                     var user = new User();
                      user.findOne(id).then((data)=>
                     {					
                         res.render("user/update",{user:data}); 
@@ -76,33 +74,26 @@ export function create(req,res){
 
 
 
-    export function trash(req,res){
-        var url_parts = url.parse(req.url, true);
-        var query = url_parts.query;	
-            var id = req.query.id;
-            var user = require("../common/models/user.js");
-             var user = new user();
-             user.setAttribute("id",id);//"email",s@g.c		 	
-             user.delete().then(function(){
-        
-                console.log("resolve is call then function");
-        
-                 return res.redirect("/users"); 
-             
-             }).catch(function(error){
-        
-                 console.log("error",error); 
-             
-                //res.redirect("/users",error); 
-        
-             });   
-        };
+export function trash(req,res){
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;	
+        var id = req.query.id;           
+            var user = new User();
+            user.setAttribute("id",id);//"email",s@g.c		 	
+            user.delete().then(function(){    
+            return res.redirect("/users");             
+            }).catch(function(error){
+    
+            console.log("error",error); 
+            //res.redirect("/users",error); 
+    
+            });   
+};
 
 
 export function index(req,res){
-    var user = require("../common/models/user.js");
-    var user = new user();
-    user.findAll().then(function (userdata)
+    var model = new User();
+    model.findAll().then(function (userdata)
     {
         userdata = userdata;
         res.render("user/index",{users:userdata}); 

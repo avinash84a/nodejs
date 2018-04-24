@@ -1,6 +1,6 @@
 import Db from "../Db";
 
-module.exports =  class User extends Db{	
+export  class User extends Db{	
 	constructor ()
 	{
 		super();

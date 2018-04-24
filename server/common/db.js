@@ -4,15 +4,15 @@ const path = require("path");
 const  fs = require("fs"); 
 var promise =require('promise');
 let _this; 
-import {Utils} from "../helper/utils";
+import * as Utils from "../helper/utils";
 module.exports = class Db {
 	constructor() {
 
         this.tableName = null; 
 		// this is to featch json object from the  json file of project level config "env.json"
-       	const envFile = fs.readFileSync(path.join(__dirname,"../config/env.json")); 
-       	let env = JSON.parse(envFile); // parse file data into object format to use 
-		this.connection = mysql.createConnection(env.db); // creating db connection using settins of env.json "db"
+       	const envFile = fs.readFileSync(path.join(__dirname,"../config/database.json")); 
+       	let dbObject = JSON.parse(envFile); // parse file data into object format to use 
+		this.connection = mysql.createConnection(dbObject.db); // creating db connection using settins of env.json "db"
 		this.attributes = {}; 
         this.errors = {}; 
 

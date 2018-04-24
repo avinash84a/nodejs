@@ -1,36 +1,37 @@
 
-		<!-- <%= user.email ; %> -->
-		
+
+
+<pre>
+ <%= JSON.stringify(user.exceptions); %> 
+</pre>
 
 	
                      
 <form method="post">
+    <div class="form-group">
+    <label for="exampleInputEmail1">Full Name </label> 
+    <input type="text" class="form-control" name="user[full_name]" id="exampleInputEmail1" value="<%= user.attributes.full_name.value%>"  placeholder="Name">
 
+    <%= user.errors.full_name; %>
 
-<div class="form-group">
-<label for="exampleInputEmail1">Full Name </label> 
-<input type="text" class="form-control" name="user[full_name]" id="exampleInputEmail1" value="<%= user.full_name%>"  placeholder="Name">
+    </div>
 
-<%= user.errors.mobile; %>
+    <div class="form-group">
+    <label for="exampleInputEmail1">Phone Number</label>
+    <input type="tel" class="form-control" name="user[mobile]" value="<%= user.attributes.mobile.value %>" id="exampleInputEmail1" placeholder="Phone Number">
+    <%= user.errors.mobile; %>
+    </div>
 
-</div>
+    <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" name="user[email]" value="<%= user.attributes.email.value %>" id="exampleInputEmail1" placeholder="Email">
+    <%= user.errors.email; %>
+    </div>
+    <div class="form-group  "  >
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password"  class="form-control" name="user[password]" value="<%= user.attributes.password.value %>" id="exampleInputPassword1" placeholder="Password"  <%= ((user.id>0)?'disabled':'')%>  >
+    <%= user.errors.password; %>
+    </div>
 
-<div class="form-group">
-<label for="exampleInputEmail1">Phone Number</label>
-<input type="tel" class="form-control" name="user[mobile]" value="<%= user.attributes.mobile.value %>" id="exampleInputEmail1" placeholder="Phone Number">
-<%= user.errors.mobile; %>
-</div>
-
-<div class="form-group">
-<label for="exampleInputEmail1">Email address</label>
-<input type="email" class="form-control" name="user[email]" value="<%= user.email %>" id="exampleInputEmail1" placeholder="Email">
-<%= user.errors.email; %>
-</div>
-<div class="form-group  "  >
-<label for="exampleInputPassword1">Password</label>
-<input type="password"  class="form-control" name="user[password]" value="<%= user.password %>" id="exampleInputPassword1" placeholder="Password"  <%= ((user.id>0)?'disabled':'')%>  >
-<%= user.errors.password; %>
-</div>
-
-<button type="submit" name="save" class="btn btn-default"><%= (user.id>0)?"Update":"Create" %></button>
+    <button type="submit" name="save" class="btn btn-default"><%= (user.id>0)?"Update":"Create" %></button>
 </form>

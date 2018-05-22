@@ -36,6 +36,8 @@ export  class User extends Db{
 					"required"
 				]
 			}
+
+			
 		};
 	}
 };

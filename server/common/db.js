@@ -3,7 +3,7 @@ var mysql = require('mysql');
 const path = require("path"); 
 const  fs = require("fs"); 
 var promise =require('promise');
-let _this; 
+/*let _this; */
 import * as Utils from "../helper/utils";
 module.exports = class Db {
 	constructor() {
@@ -16,12 +16,12 @@ module.exports = class Db {
 		this.attributes = {}; 
         this.errors = {}; 
 
-        _this = this; 
+      /*  _this = this; */
     }
 
 
     setAttribute(key,value){//"mobile",1232
-    	_this.attributes[key].value = value; 
+    	this.attributes[key].value = value; 
     }
 
 
@@ -33,18 +33,18 @@ module.exports = class Db {
     return new Promise((resolve,reject)=>{
        		
         let result;
-		_this.connection.connect();
+		this.connection.connect();
 		 
-		_this.connection.query(sql, (error, results, fields)=> {
+		this.connection.query(sql, (error, results, fields)=> {
                 if (error)
                 {
-                     _this.connection.end();
+                     this.connection.end();
                     reject(error);
                 }
                 else
                 {
 
-                     _this.connection.end();   
+                     this.connection.end();   
                     
                     resolve(results);           
                      //result=JSON.stringify(results);
@@ -71,19 +71,19 @@ module.exports = class Db {
     create (){    
         return new Promise((resolve,reject)=>{
 
-            if(!_this.tableName)
+            if(!this.tableName)
             {
                 reject({status:"error",message:"Table for model not found"});
             }
 
-            let sql = "insert into "+_this.tableName+"(";
-            let attributes = _this.attributes; 
-            sql = sql+Object.keys(_this.attributes).join().toString()+") values(" ;
+            let sql = "insert into "+this.tableName+"(";
+            let attributes = this.attributes; 
+            sql = sql+Object.keys(this.attributes).join().toString()+") values(" ;
                     //sql="insert into users(EMAIL,pass,full_name,mobile") values("
             let values = "";
 
-            console.log(_this.attributes);
-            let attributesKeysArray = Object.keys(_this.attributes); 
+            console.log(this.attributes);
+            let attributesKeysArray = Object.keys(this.attributes); 
             attributesKeysArray.forEach((key,i)=>{
                 let comma = ",";
                 if(i === (attributesKeysArray.length -1))
@@ -234,29 +234,29 @@ module.exports = class Db {
     {
         if(!Utils.isEmpty(obj))
         {
-            console.log(_this.attributes);
+            console.log(this.attributes);
             Object.keys(obj).forEach((key,i)=>{
                 
-                if(!Utils.isEmpty(_this.attributes[key]))
+                if(!Utils.isEmpty(this.attributes[key]))
                 {
-                    if(_this.attributes[key].validation.indexOf("required") != -1 )
+                    if(this.attributes[key].validation.indexOf("required") != -1 )
                     {
                         if(!Utils.isEmpty(obj[key]))
                         {
-                           delete  _this.errors[key];
-                            _this.attributes[key].value= obj[key];
+                           delete  this.errors[key];
+                            this.attributes[key].value= obj[key];
                         }
                         else
                         {
 
-                            _this.errors[key] = key + " is required"; 
+                            this.errors[key] = key + " is required"; 
                         }
                     }
                     else
                     {
-                        _this.attributes[key].value= obj[key];     
+                        this.attributes[key].value= obj[key];     
                         
-                       delete  _this.errors[key]
+                       delete  this.errors[key]
                     }
                 }
             });
@@ -270,7 +270,7 @@ module.exports = class Db {
 
     validate(){
         console.log("in validation",_this.errors);
-        if(!Utils.isEmpty(_this.errors))
+        if(!Utils.isEmpty(this.errors))
         {
             return false;
         }

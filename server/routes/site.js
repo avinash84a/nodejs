@@ -1,5 +1,5 @@
 import url from 'url';
-
+import {User} from "../common/models/user";
 export function signup(req,res){
 
 
@@ -11,20 +11,19 @@ export function signup(req,res){
     
     if(typeof fullName != 'undefined')
     {
-        var user = require("../common/models/user.js");
-        var model = new user();
+        var model = new User();
         model.setAttribute("email",email);//"email",s@g.c
         model.setAttribute("password" , password);//"password",123
         model.setAttribute("full_name" , fullName);//"full_name",shiva
         model.setAttribute("mobile",mobile);//"mobile",1232
         
-        model.create().then(function(res){
+        model.create().then(function(data){
         
         res.render("site/welcome"); 
 
         }).catch(function(error){
             console.log(error);
-                    res.render("site/signup"); 
+            res.render("site/signup"); 
         }); 
     }
     else
@@ -49,8 +48,8 @@ export function login(req,res){
     
     if(typeof email != 'undefined' && typeof email == typeof qemail && typeof password != 'undefined' && typeof password == typeof pass )
     {
-        var user = require("../common/models/user.js");
-         var model = new user();
+        
+         var model = new User();
          model.setAttribute("id",id);
          model.setAttribute("email",email);//"email",s@g.c
          model.setAttribute("password" , password);//"password",123

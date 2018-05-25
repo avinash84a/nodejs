@@ -1,9 +1,10 @@
+
 import url from 'url';
 import * as utils from "../helper/utils.js"; 
 import {User} from "../common/models/user.js"; 
 
 export function create(req,res){	
-    var model = new User();
+    let model = new User();
     if(model.load(req.body.user) && model.validate())
     {                     
         model.create().then(()=>{	
@@ -19,26 +20,24 @@ export function create(req,res){
     {		
         res.render("user/create",{user:model}); 
     }
-};
+}
 
 
  export function update(req,res){
-    var url_parts = url.parse(req.url, true);
-    var query = url_parts.query;	
-        var id = req.query.id;		
-            if(typeof id != 'undefined' && id != 0)
+    let url_parts = url.parse(req.url, true);
+    let query = url_parts.query;	
+        let id = req.query.id;		
+            if(typeof id !== 'undefined' && id !== 0)
             {
                 let fullName = req.body.full_name;//shiva 
                 let email = req.body.email;//s@g.c 
                 let mobile = req.body.mobile_number; 
                 let password = req.body.password;
-                var url_parts = url.parse(req.url, true);
-                var query = url_parts.query;	
-                var id = req.query.id; 
+           
     
-                if( ! utils.isEmpty(fullName) && typeof email != 'undefined' && typeof mobile != 'undefined' && typeof password != 'undefined')
+                if( ! utils.isEmpty(fullName) && typeof email !== 'undefined' && typeof mobile !== 'undefined' && typeof password !== 'undefined')
                 {
-                     var model = new User();
+                     let model = new User();
                      
                      model.setAttribute("id",id);
                      model.setAttribute("email",email);//"email",s@g.c
@@ -49,17 +48,17 @@ export function create(req,res){
                          return res.redirect("/users"); 
                      }).catch((error)=>{
                          console.log("error in update");
-                     }) 
+                     }); 
                  }
                  else
                  {		
-                     var user = new User();
+                     let user = new User();
                      user.findOne(id).then((data)=>
                     {					
                         res.render("user/update",{user:data}); 
                         
                     }).catch((error)=>{
-                        console.log(error)
+                        console.log(error);
                     });
                 }
              }
@@ -69,16 +68,16 @@ export function create(req,res){
                 res.redirect("/users"); 
             } 
         
-    };
+    }
 
 
 
 
 export function trash(req,res){
-    var url_parts = url.parse(req.url, true);
-    var query = url_parts.query;	
-        var id = req.query.id;           
-            var user = new User();
+    let url_parts = url.parse(req.url, true);
+    let query = url_parts.query;	
+        let id = req.query.id;           
+            let user = new User();
             user.setAttribute("id",id);//"email",s@g.c		 	
             user.delete().then(function(){    
             return res.redirect("/users");             
@@ -88,11 +87,11 @@ export function trash(req,res){
             //res.redirect("/users",error); 
     
             });   
-};
+}
 
 
 export function index(req,res){
-    var model = new User();
+    let model = new User();
     model.findAll().then(function (userdata)
     {
         userdata = userdata;
@@ -101,4 +100,4 @@ export function index(req,res){
 
         console.log(error);
     });
-};
+}

@@ -1,3 +1,5 @@
+
+
 import url from 'url';
 import {User} from "../common/models/user";
 export function signup(req,res){
@@ -9,7 +11,7 @@ export function signup(req,res){
     let password = req.body.password; 
 
     
-    if(typeof fullName != 'undefined')
+    if(typeof fullName !== 'undefined')
     {
         var model = new User();
         model.setAttribute("email",email);//"email",s@g.c
@@ -46,7 +48,7 @@ export function login(req,res){
     var qemail = req.query.email;
     var pass = req.query.password;
     
-    if(typeof email != 'undefined' && typeof email == typeof qemail && typeof password != 'undefined' && typeof password == typeof pass )
+    if(typeof email !== 'undefined' && typeof email === typeof qemail && typeof password !== 'undefined' && typeof password === typeof pass )
     {
         
          var model = new User();

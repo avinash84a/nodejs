@@ -2,7 +2,7 @@
 export function isEmpty(variable)
 {
     
-    if(typeof variable == 'undefined' || variable == ''  || variable == null || Object.keys(variable).length == 0)
+    if(typeof variable === 'undefined' || variable === ''  || variable === null || Object.keys(variable).length === 0)
     {
         return true; 
     }
@@ -14,6 +14,6 @@ export function isEmpty(variable)
 
 export function dateFormatShow (date){
 
-    return date.getYear + "-"+date.getMonth 
+    return date.getYear + "-"+ date.getMonth ;
     
 }

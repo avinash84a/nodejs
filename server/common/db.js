@@ -126,7 +126,7 @@ module.exports = class Db {
             var query = this.query; 
             return  new Promise(function(resolve,reject){
 
-                if(typeof t1 == 'undefined' || !t1)
+                if(typeof t1 === 'undefined' || !t1)
                 {
                     reject({status:"error",message:"model is not found"});
                 }
@@ -143,11 +143,7 @@ module.exports = class Db {
 
     }
 
-            
-
-           
     
-
            
     
     update ()
@@ -167,7 +163,7 @@ module.exports = class Db {
                     resolve(data);
                  }).catch((error)=>{
                     reject(error); 
-                 })
+                 });
          }); 
 
     }  
@@ -197,12 +193,12 @@ module.exports = class Db {
             }).catch(function(error){
 
                 reject(error);
-            })
+            });
 
      });
 
      
-    }; 
+    }
 
 
     /* 
@@ -239,7 +235,7 @@ module.exports = class Db {
                 
                 if(!Utils.isEmpty(this.attributes[key]))
                 {
-                    if(this.attributes[key].validation.indexOf("required") != -1 )
+                    if(this.attributes[key].validation.indexOf("required") !== -1 )
                     {
                         if(!Utils.isEmpty(obj[key]))
                         {
@@ -256,7 +252,7 @@ module.exports = class Db {
                     {
                         this.attributes[key].value= obj[key];     
                         
-                       delete  this.errors[key]
+                       delete  this.errors[key];
                     }
                 }
             });
@@ -266,8 +262,7 @@ module.exports = class Db {
         {
             return false; 
         }
-    };
-
+    }
     validate(){
         console.log("in validation",_this.errors);
         if(!Utils.isEmpty(this.errors))

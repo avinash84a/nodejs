@@ -1,3 +1,5 @@
+
+
 import Db from "../Db";
 
 export  class User extends Db{	
@@ -36,6 +38,8 @@ export  class User extends Db{
 					"required"
 				]
 			}
+
+			
 		};
 	}
-};
+}
